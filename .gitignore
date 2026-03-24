@@ -1,0 +1,24 @@
+# Backend
+todo/target/
+todo/.mvn/
+todo/.classpath
+todo/.project
+todo/.settings/
+
+# Frontend
+client/node_modules/
+client/dist/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.pfx
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
