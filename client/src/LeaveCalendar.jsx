@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { format, isWithinInterval, isEqual } from "date-fns";
 import "react-calendar/dist/Calendar.css";
+import { EMPLOYEE_API, LEAVES_API } from "./lib/api";
 
 const styles = {
   container: { padding: "2rem 1.5rem", maxWidth: 1200, margin: "0 auto", fontFamily: "system-ui, sans-serif" },
@@ -53,10 +54,6 @@ export default function LeaveCalendar() {
   const [form, setForm] = useState({ startDate: "", endDate: "", reason: "" });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
-  const EMPLOYEE_API = `${API_BASE}/employees`;
-  const LEAVES_API = `${API_BASE}/leaves`;
 
   // Fetch employees
   useEffect(() => {

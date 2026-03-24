@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
 import "./Dashboard.css";
+import { EMPLOYEE_API, LEAVES_API } from "./lib/api";
 
 export default function Dashboard() {
   const [employees, setEmployees] = useState([]);
@@ -23,10 +24,6 @@ export default function Dashboard() {
     department: "",
     salary: "",
   });
-
-  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
-  const EMPLOYEE_API = `${API_BASE}/employees`;
-  const LEAVES_API = `${API_BASE}/leaves`;
 
   useEffect(() => {
     fetchEmployees();

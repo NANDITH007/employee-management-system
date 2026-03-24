@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/leaves")
-@CrossOrigin(origins = "*")
 public class LeaveController {
 
     private final LeaveRepository leaveRepository;
