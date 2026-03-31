@@ -5,3 +5,15 @@ export const API_BASE =
 
 export const EMPLOYEE_API = `${API_BASE}/employees`;
 export const LEAVES_API = `${API_BASE}/leaves`;
+export const AUTH_API = `${API_BASE}/auth`;
+
+/**
+ * Wrapper around fetch that includes credentials (cookies) for session auth.
+ * Use this for all API calls to ensure the session cookie is sent.
+ */
+export function authFetch(url, options = {}) {
+  return fetch(url, {
+    ...options,
+    credentials: "include",
+  });
+}

@@ -3,9 +3,9 @@ import Calendar from "react-calendar";
 import { format } from "date-fns";
 import "react-calendar/dist/Calendar.css";
 import "./Dashboard.css";
-import { EMPLOYEE_API, LEAVES_API } from "./lib/api";
+import { EMPLOYEE_API, LEAVES_API, authFetch } from "./lib/api";
 
-export default function Dashboard() {
+export default function Dashboard({ onLogout }) {
   const [employees, setEmployees] = useState([]);
   const [leaves, setLeaves] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await fetch(EMPLOYEE_API);
+      const res = await authFetch(EMPLOYEE_API);
       const data = await res.json();
       setEmployees(Array.isArray(data) ? data : []);
       if (Array.isArray(data) && data.length > 0 && !selectedEmployee) {
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
   const fetchLeaves = async () => {
     try {
-      const res = await fetch(LEAVES_API);
+      const res = await authFetch(LEAVES_API);
       const data = await res.json();
       setLeaves(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -73,7 +73,7 @@ export default function Dashboard() {
       return;
     }
     try {
-      const res = await fetch(EMPLOYEE_API, {
+      const res = await authFetch(EMPLOYEE_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(employeeForm),
@@ -103,7 +103,7 @@ export default function Dashboard() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(LEAVES_API, {
+      const res = await authFetch(LEAVES_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -132,7 +132,7 @@ export default function Dashboard() {
 
   const approveLeave = async (leaveId) => {
     try {
-      await fetch(`${LEAVES_API}/${leaveId}`, {
+      await authFetch(`${LEAVES_API}/${leaveId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "APPROVED" }),
@@ -145,7 +145,7 @@ export default function Dashboard() {
 
   const rejectLeave = async (leaveId) => {
     try {
-      await fetch(`${LEAVES_API}/${leaveId}`, {
+      await authFetch(`${LEAVES_API}/${leaveId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "REJECTED" }),
@@ -207,13 +207,25 @@ export default function Dashboard() {
       <aside className="sidebar-left">
         <div className="sidebar-header">
           <h2>Team Members</h2>
-          <button 
-            className="btn-add-header" 
-            onClick={() => setShowEmployeeForm(!showEmployeeForm)}
-            title="Add new employee"
-          >
-            {showEmployeeForm ? "✕" : "+"}
-          </button>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button 
+              className="btn-add-header" 
+              onClick={() => setShowEmployeeForm(!showEmployeeForm)}
+              title="Add new employee"
+            >
+              {showEmployeeForm ? "✕" : "+"}
+            </button>
+            {onLogout && (
+              <button 
+                className="btn-add-header" 
+                onClick={onLogout}
+                title="Sign out"
+                style={{ fontSize: '14px' }}
+              >
+                🚪
+              </button>
+            )}
+          </div>
         </div>
 
         {showEmployeeForm && (
